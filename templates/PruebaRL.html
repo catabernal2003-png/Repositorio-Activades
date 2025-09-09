@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba de Regresión Lineal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="prueba-rl">
+    <h1>Conoce el precio de tu vivienda según</h1>
+
+    <form method="POST" action="/PV">
+        <label for="metros">Los m²:</label>
+        <input type="number" id="metros" name="metros" placeholder="Ingrese los m²" required>
+
+        <br><br>
+
+        <label for="habitaciones">El N° de Habitaciones:</label>
+        <input type="number" id="habitaciones" name="habitaciones" placeholder="Ingrese el N° de Habitaciones" required>
+
+        <br><br>
+
+        <button type="submit">Calcular</button>
+    </form>
+
+    {% if resultado %}
+        <h2>El precio estimado de la vivienda es: ${{ "{:,.2f}".format(resultado) }}</h2>
+    {% endif %}
+</body>
+</html>
