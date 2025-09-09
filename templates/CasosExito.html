@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="backToTop" title="Volver arriba">↑</button>
+    <a href="{{ url_for('home') }}" class="btn-home">← Volver al Home</a>
+
+    <!-- Contenedor principal -->
+    <main class="container">
+        <h1 class="hero-title">{{ name }} - Investigación de Casos de Uso en ML Supervisado</h1>
+        <!-- CARD 1 -->
+        <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>📡 Comunicaciones / Servicios Digitales</h2>
+            </div>
+            <div class="card-content">
+                <h3>Descripción del problema</h3>
+                <p>
+                    Alto volumen de correos no deseados (spam) y ataques de phishing que degradan la productividad
+                    y aumentan el riesgo de seguridad al exponer a los usuarios a robo de información, fraude financiero,
+                    y acceso no autorizado a datos sensibles.
+                </p>
+
+                <h3>Tipo de algoritmo supervisado</h3>
+                <p>
+                    Clasificadores supervisados que combinan múltiples señales (texto, metadata, heurísticas) y aprendizaje
+                    continuo con retroalimentación (etiquetado por usuarios/servicios); uso de frameworks como TensorFlow
+                    para modelos a escala. La combinación se logra con modelos que aceptan entradas heterogéneas, como
+                    redes neuronales profundas, árboles de decisión con boosting (XGBoost, LightGBM, CatBoost).
+                </p>
+
+                <h3>Beneficios obtenidos</h3>
+                <ul>
+                    <li>Bloqueo masivo de spam y phishing (&gt; 99.9%).</li>
+                    <li>Reducción de riesgo para usuarios finales y mayor tasa de entrega de correos legítimos.</li>
+                    <li>Adaptación rápida ante nuevas tácticas de ataque gracias a reentrenamiento y señales en tiempo real.</li>
+                </ul>
+
+                <h3>Ejemplo concreto</h3>
+                <p>
+                    Gmail (Google) implementó y evolucionó sus filtros con ML (incorporación de TensorFlow para mejorar detección
+                    y bloqueo). Gmail utiliza diferentes modelos para determinar si un correo es Spam o no. No pueden fallar en esto.
+                    No pueden bloquear un e-mail que proceda de un contacto legítimo solo porque contenga algo que pueda parecer correo
+                    basura. Ahora además agregan TensorFlow, que ayudará a los modelos anteriores a acertar más y mejor sobre los
+                    correos de este tipo. Permite actualizar esos modelos y que sean más eficaces.
+                </p>
+
+                <h3>Métricas</h3>
+                <p>
+                    Proporción de spam bloqueado, falsos positivos muy bajos, volumen adicional de spam bloqueado por mejoras
+                    (ej.: +100 millones de mensajes/día en un anuncio). Bloqueando más de 99,9% de spam, phishing y malware que
+                    llegan a las bandejas de entrada de los usuarios.
+                </p>
+
+                <h3>Referencias</h3>
+                <ul class="referencias">
+                    <li>
+                        Kumaran, N. (2019, 7 febrero). Spam does not bring us joy—ridding Gmail of 100 million more spam messages with TensorFlow.
+                        Google Workspace Blog. 
+                        <a href="https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Kumaran, N. (2022, 28 mayo). An overview of Gmail’s spam filters.
+                        Google Workspace Blog. 
+                        <a href="https://workspace.google.com/blog/identity-and-security/an-overview-of-gmails-spam-filters" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Jiménez, J. (2023, 20 julio). Así es como Gmail es capaz de bloquear el 99.9% del Spam y malware gracias a la Inteligencia Artificial.
+                        RedesZone. 
+                        <a href="https://www.redeszone.net/2019/02/07/bloqueo-spam-gmail-tensorflow/" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>🚜 Agricultultura / Servicios Agriarios 🌾</h2>
+            </div>
+            <div class="card-content">
+                <h3>Descripción del problema</h3>
+                <p>
+                    Tradicionalmente, los agricultores aplicanban herbicidas de forma uniforme en sus campos,  por lo que no lograban distinguir facilmente entre los cultivos y la maleza.
+                    <h4>Esto generaba tres grandes problemas:</h4>
+                    <ol>
+                        <li><strong>Altos costos de insumos:</strong> Al aplicar el herbicida de forma uniforme resultaba costoso para los agricultores y se podia desperdicia una gran cantidad al aplicarlo en lugares donde no hay malezas.</li>
+                        <li><strong>Impacto ambiental:</strong> Facilmente se podia crear una contaminacion sobre los suelos y aguas, y afectando la biodiversidad.</li>
+                        <li><strong>Resistencia de malezas:</strong> Al hacer uso excesivo de hervicidas se favorecia o daba la oportunidad de que creciera una “supermalezas” super resistentes.</li>
+                    </ol>
+                </p>
+                <h3>Tipo de algoritmo supervisado</h3>
+                <p>
+                    Se uitlizaron Redes neuronales convolucionales, la razon de su uso es porque estas redes neuronales son el estándar de visión para computadoras cuando la tarea requiere clasificar y detectar objetos en imágenes.
+                    Logrando distinguir con mayor facilidad entre patrones muy finos como sus texturas, colores y las formas de las plantas; La tarea supervisada realizada fue la clasificación binaria entre el cultivo vs. maleza.
+                </p>
+
+                <h3>Beneficios obtenidos</h3>
+                <ul>
+                    <li>detección enfocada ( se logra identificar en qué píxel / planta está la maleza para activar la boquilla correcta).</li>
+                    <li>Reducción de entre (80–90%) en herbicida dependiendo del cultivo y nivel de infestación.</li>
+                    <li>Pulverización a gran velocidad en comparacion del metodo tradicional.</li>
+                    <li>Menor contaminación química dando mas sostenibilidad.</li>
+                </ul>
+
+                <h3>Ejemplo concreto</h3>
+                <p>
+                    <strong>John Deere</strong> implementó y evolucionó <strong>See & Spray Ultimate</strong> con ML (visión por computadora basada en CNNs para distinguir cultivo de maleza en tiempo real). 
+                    El sistema utilizo modelos supervisados entrenados con millones de imágenes etiquetadas. Por lo que el nivel de fallo era bajo, evitando que se confunda un cultivo con maleza,  evitando así daños al cultivo;
+                    Ya que si dejaban pasar malezas sin detectar, estas podian bajar la calidad del producto. Ahora con la incorporación de redes neuronales convolucionales se optimiza el uso de herbicida solamente donde es necesario. 
+                    Logrando reducir un 90% el uso de químicos.
+                </p>
+
+                <h3>Métricas</h3>
+                <p>
+                    Con el sistema <strong>See & Spray Ultimate de John Deere</strong> se alcanza una cobertura amplia al reconocer más de una docena de especies de malezas en cultivos tales como el algodón, maíz y soja. Cada boquilla del pulverizador 
+                    puede identificar y procesa alrededor de 20 imágenes por segundo y tomar decisiones en menos de 50 milisegundos, lo que permite la clasificación precisa entre cultivo y maleza incluso a 19 kilometros por hora. 
+                    En pruebas independientes se demostro que esta tecnología puede aumentar la productividad del sector agrícola alrededor de un 5% y un 10% al reducir el crecimiento de las malezas, gracias a sus brazos de hasta 36 metros de ancho
+                    el equipo es capaz de cubrir hectáreas completas en pocas horas. Además, el retorno de inversión para los agricultores suele alcanzarse en un plazo de dos 
+                    a tres temporadas, impulsado por la reducción de hasta un 90% en herbicidas y la mejora en el rendimiento global de los cultivos.
+                </p>
+
+                <h3>Referencias</h3>
+                <ul class="referencias">
+                    <li>
+                        See & SprayTM Ultimate. (n.d.). Deere.com. Retrieved September 3, 2025, from. 
+                        <a href="https://www.deere.com/en/sprayers/see-spray-ultimate/" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Avent TH, Norsworthy JK, Patzoldt WL, et al. Comparing herbicide application methods with See &amp; SprayTM technology in soybean. Weed Technology. 2024;38:e74. doi:10.1017/wet.2024.70 
+                        <a href="https://www.cambridge.org/core/journals/weed-technology/article/comparing-herbicide-application-methods-with-see-spray-technology-in-soybean/05967C11D1BF0B174A13BE687B865AF2" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        YouTube. (n.d.). Youtu.Be. Retrieved September 3, 2025, from 
+                        <a href="https://youtu.be/JF0n8pMkK3k?si=K8-cxKvvMfmILfE0" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+       <!-- ...existing code... -->
+        <!-- CARD 3 -->
+        <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>🎬 Recomendaciones Personalizadas en Netflix</h2>
+            </div>
+            <div class="card-content">
+                <h3>Descripción del problema</h3>
+                <p>
+                    Los usuarios de Netflix tienen acceso a miles de títulos, lo que puede dificultar encontrar contenido relevante y atractivo. El reto es ofrecer recomendaciones personalizadas que aumenten la satisfacción y el tiempo de permanencia en la plataforma.
+                </p>
+
+                <h3>Tipo de algoritmo supervisado</h3>
+                <p>
+                    Netflix utiliza algoritmos supervisados de clasificación y regresión, como redes neuronales y árboles de decisión, para predecir la probabilidad de que un usuario disfrute un título. Estos modelos se entrenan con datos históricos de visualización, calificaciones y comportamiento de los usuarios.
+                </p>
+
+                <h3>Beneficios obtenidos</h3>
+                <ul>
+                    <li>Mejora significativa en la experiencia del usuario al recibir recomendaciones relevantes.</li>
+                    <li>Aumento del tiempo de visualización y retención de suscriptores.</li>
+                    <li>Optimización de la promoción de nuevos títulos y contenido original.</li>
+                </ul>
+
+                <h3>Ejemplo concreto</h3>
+                <p>
+                    Cuando un usuario inicia sesión, Netflix analiza su historial de visualización y lo compara con patrones de otros usuarios similares. El sistema recomienda películas y series que tienen alta probabilidad de ser vistas y disfrutadas, basándose en modelos supervisados que aprenden de millones de interacciones.
+                </p>
+
+                <h3>Métricas</h3>
+                <p>
+                    Precisión de las recomendaciones, tasa de clics en títulos sugeridos, tiempo de visualización adicional generado por el sistema de recomendaciones y retención de usuarios.
+                </p>
+
+                <h3>Referencias</h3>
+                <ul class="referencias">
+                    <li>
+                        Netflix Technology Blog. (2017, 6 abril). Recommendation Algorithms at Netflix.
+                        <a href="https://netflixtechblog.com/recommendations-algorithms-at-netflix-3e7b9e6c0dc3" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Netflix Technology Blog. (2019, 26 junio). Personalization at Netflix.
+                        <a href="https://netflixtechblog.com/personalization-at-netflix-1ec3b3b99b9b" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Amatriain, X. & Basilico, J. (2012, 21 septiembre). Netflix Recommendations: Beyond the 5 stars.
+                        <a href="https://netflixtechblog.com/netflix-recommendations-beyond-the-5-stars-part-1-55838468f429" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Gomez-Uribe, C. A., & Hunt, N. (2015). The Netflix Recommender System: Algorithms, Business Value, and Innovation.
+                        <a href="https://www.netflix.com/recommendations" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function toggleCard(header) {
+            const card = header.parentElement;
+            const content = card.querySelector('.card-content');
+            const allCards = document.querySelectorAll('.card-content');
+
+            allCards.forEach(c => {
+                if (c !== content) {
+                    c.style.maxHeight = null;
+                    c.style.padding = '0 15px';
+                }
+            });
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.padding = '0 15px';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.padding = '15px';
+            }
+        }
+    </script>
+<script>
+
+    window.onscroll = function () {
+        const btn = document.getElementById("backToTop");
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btn.style.display = "flex";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    // Volver arriba con animación suave
+    document.getElementById("backToTop").onclick = function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>
+</body>
+</html>
+<!-- CARD 4 -->
+        <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>🚗 Aplicación de Transporte (Uber, Didi, Cabify)</h2>
+            </div>
+            <div class="card-content">
+                <h3>Descripción del problema</h3>
+                <p>
+                    Las aplicaciones de transporte enfrentan el reto de asignar conductores a pasajeros de manera eficiente, estimar tiempos de llegada y calcular tarifas dinámicas según la demanda y el tráfico. Además, deben detectar comportamientos fraudulentos y optimizar rutas en tiempo real.
+                </p>
+
+                <h3>Tipo de algoritmo supervisado</h3>
+                <p>
+                    Se emplean algoritmos supervisados de regresión para predecir el tiempo estimado de llegada (ETA) y el costo del viaje, así como clasificadores para identificar patrones de fraude y evaluar la calidad del servicio. Los modelos se entrenan con datos históricos de viajes, ubicaciones GPS, tráfico y comportamiento de usuarios.
+                </p>
+
+                <h3>Beneficios obtenidos</h3>
+                <ul>
+                    <li>Asignación rápida y precisa de conductores a pasajeros.</li>
+                    <li>Estimaciones confiables de tiempo y costo para mejorar la experiencia del usuario.</li>
+                    <li>Detección proactiva de fraudes y comportamientos anómalos.</li>
+                    <li>Optimización de rutas y reducción de tiempos de espera.</li>
+                </ul>
+
+                <h3>Ejemplo concreto</h3>
+                <p>
+                    Cuando un usuario solicita un viaje, el sistema predice el tiempo de llegada del conductor y el costo del trayecto usando modelos de regresión entrenados con millones de viajes previos. Además, se monitorean patrones de cancelaciones y rutas inusuales para identificar posibles fraudes.
+                </p>
+
+                <h3>Métricas</h3>
+                <p>
+                    Precisión en la predicción de ETA, porcentaje de asignaciones exitosas, reducción de fraudes detectados, satisfacción del usuario y optimización de rutas.
+                </p>
+
+                <h3>Referencias</h3>
+                <ul class="referencias">
+                    <li>
+                        Uber Engineering Blog. (2018, 15 mayo). ETA Prediction at Uber.
+                        <a href="https://eng.uber.com/eta-prediction/" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Uber Engineering Blog. (2017, 13 diciembre). Machine Learning for Uber’s ETA Predictions.
+                        <a href="https://eng.uber.com/machine-learning-eta/" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Didi Research. (2019). Didi’s Machine Learning Applications in Transportation.
+                        <a href="https://www.didiglobal.com/news/newsDetail?id=478" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                    <li>
+                        Cabify Tech Blog. (2020, 10 marzo). How Cabify uses Machine Learning to improve user experience.
+                        <a href="https://cabify.tech/blog/how-cabify-uses-machine-learning-to-improve-user-experience" target="_blank">
+                            Enlace
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
