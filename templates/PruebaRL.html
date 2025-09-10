@@ -1,29 +1,80 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Prueba de Regresión Lineal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body class="prueba-rl">
-    <h1>Conoce el precio de tu vivienda según</h1>
+{% extends "base.html" %}
 
-    <form method="POST" action="/PV">
-        <label for="metros">Los m²:</label>
-        <input type="number" id="metros" name="metros" placeholder="Ingrese los m²" required>
+{% block title %}Ejercicio - Regresión Lineal{% endblock %}
 
-        <br><br>
+{% block content %}
+  <h1 class="hero-title text-center mb-4">Ejercicio práctico — Predicción de precio</h1>
 
-        <label for="habitaciones">El N° de Habitaciones:</label>
-        <input type="number" id="habitaciones" name="habitaciones" placeholder="Ingrese el N° de Habitaciones" required>
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h2 class="h5 mb-0">Explicación del dataset</h2>
+    </div>
+    <div class="card-body">
+      <p class="card-text">Dataset de entrenamiento: columnas <strong>Metros2</strong>, <strong>Habitaciones</strong> y <strong>Precio</strong>. El modelo entrenado en <code>RegresionLineal.py</code> se usa para predecir el precio según metros y habitaciones.</p>
+    </div>
+  </div>
 
-        <br><br>
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h2 class="h5 mb-0">Gráfico de entrenamiento</h2>
+    </div>
+    <div class="card-body text-center">
+      <img src="{{ url_for('plot_regresion') }}" alt="Gráfico regresión" class="img-fluid rounded">
+    </div>
+  </div>
 
-        <button type="submit">Calcular</button>
-    </form>
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h2 class="h5 mb-0">Datos de entrenamiento (muestra)</h2>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>m²</th>
+              <th>Habitaciones</th>
+              <th>Precio</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for metros, hab, precio in data_preview %}
+              <tr>
+                <td>{{ metros }}</td>
+                <td>{{ hab }}</td>
+                <td>{{ precio }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-    {% if resultado %}
-        <h2>El precio estimado de la vivienda es: ${{ "{:,.2f}".format(resultado) }}</h2>
-    {% endif %}
-</body>
-</html>
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h2 class="h5 mb-0">Predicción</h2>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('precio_vivienda') }}" method="post" class="row g-3">
+        <div class="col-md-6">
+          <label for="metros" class="form-label">Tamaño (m²)</label>
+          <input type="number" class="form-control" id="metros" name="metros" step="0.1" required value="{{ metros or '' }}">
+        </div>
+        <div class="col-md-6">
+          <label for="habitaciones" class="form-label">Habitaciones</label>
+          <input type="number" class="form-control" id="habitaciones" name="habitaciones" min="1" required value="{{ habitaciones or '' }}">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Calcular predicción</button>
+        </div>
+      </form>
+
+      {% if resultado is not none %}
+        <div class="alert alert-success mt-3" role="alert">
+          <strong>Precio estimado:</strong> {{ '%.2f'|format(resultado) }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}  
