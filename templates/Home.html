@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - App Regresión Lineal{% endblock %}
+
+{% block content %}
+  <h1 class="hero-title text-center mb-4">Bienvenido/a a la App </h1>
+  <p class="text-center fs-5 mb-4">
+    Usa el menú para navegar entre los módulos de Regresión Lineal.
+  </p>
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h2 class="h5 mb-0">Regresión Lineal</h2>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('concepto_rl') }}" class="btn btn-outline-primary">📚 Conceptos básicos</a>
+            <a href="{{ url_for('prueba_rl') }}" class="btn btn-outline-primary">🔧 Ejercicio práctico</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white">
+          <h2 class="h5 mb-0">Otras secciones</h2>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('casos_exito') }}" class="btn btn-outline-success">🏆 Casos de Éxito</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
