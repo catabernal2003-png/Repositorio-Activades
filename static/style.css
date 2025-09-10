@@ -17,8 +17,8 @@ html {
 
 body {
     font-family: "Poppins", sans-serif;
-    background: url(https://wallpapercave.com/uwp/uwp4632009.jpeg) no-repeat center center fixed;
-    background-size: cover;
+    background: linear-gradient(135deg, #1f1c2c, #928DAB);
+    background-attachment: fixed;
     display: block;
     padding: 50px 20px;
     box-sizing: border-box;
