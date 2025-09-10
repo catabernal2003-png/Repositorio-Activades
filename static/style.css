@@ -17,8 +17,8 @@ html {
 
 body {
     font-family: "Poppins", sans-serif;
-    background: url(https://wallpapercave.com/uwp/uwp4632009.jpeg) no-repeat center center fixed;
-    background-size: cover;
+    background: linear-gradient(135deg, #1f1c2c, #928DAB);
+    background-attachment: fixed;
     display: block;
     padding: 50px 20px;
     box-sizing: border-box;
@@ -30,7 +30,7 @@ body {
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
-    background: linear-gradient(90deg, #31e4db, #3bc775, #ebc23c, #ff6f61);
+    background: linear-gradient(90deg, #4facfe, #7366ff, #f86cf8);
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -130,7 +130,7 @@ h2 {
 .card-content {
     padding: 0 15px;
     transition: max-height 0.5s ease, padding 0.3s ease;
-    color: white;
+    color: beige;
     line-height: 1.5;
     max-height: 0;
     overflow: hidden;
