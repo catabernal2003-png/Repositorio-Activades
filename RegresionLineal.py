@@ -20,3 +20,7 @@ def predict_price(metros, habitaciones):
     """Recibe m² y habitaciones, retorna el precio estimado."""
     result = model.predict([[metros, habitaciones]])[0]
     return result
+#la app podrá mostrar la tabla y graficar.
+def get_training_data():
+    """Devuelve listas para la UI: Metros2, Habitaciones, Precio"""
+    return df["Metros2"].tolist(), df["Habitaciones"].tolist(), df["Precio"].tolist()

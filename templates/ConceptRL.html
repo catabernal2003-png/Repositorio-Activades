@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Conceptos - Regresión Lineal{% endblock %}
+
+{% block content %}
+  <h1 class="hero-title text-center mb-4">Regresión lineal — Conceptos básicos</h1>
+
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">
+      <h2 class="h5 mb-0">Definición</h2>
+    </div>
+    <div class="card-body">
+      <p class="card-text">La regresión lineal modela la relación entre una variable dependiente (precio) y una o más variables independientes (p. ej. metros² y habitaciones) como una combinación lineal de parámetros.</p>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">
+      <h2 class="h5 mb-0">Supuestos habituales</h2>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Linealidad:</strong> relación aproximada lineal entre variables independientes y la dependiente.</li>
+        <li class="list-group-item"><strong>Independencia:</strong> errores/residuos independientes entre observaciones.</li>
+        <li class="list-group-item"><strong>Homoscedasticidad:</strong> varianza constante de los residuos.</li>
+        <li class="list-group-item"><strong>Normalidad del error:</strong> residuos aproximadamente normales (para pruebas e intervalos).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">
+      <h2 class="h5 mb-0">Referencias (ejemplo APA 7)</h2>
+    </div>
+    <div class="card-body">
+      <ol>
+        <li>James, G., Witten, D., Hastie, T., &amp; Tibshirani, R. (2021). <em>An Introduction to Statistical Learning</em> (2ª ed.). Springer.</li>
+        <li>Montgomery, D. C., Peck, E. A., &amp; Vining, G. G. (2012). <em>Introduction to Linear Regression Analysis</em> (5ª ed.). Wiley.</li>
+      </ol>
+    </div>
+  </div>
+{% endblock %}

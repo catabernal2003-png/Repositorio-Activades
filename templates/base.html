@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}App Regresión Lineal{% endblock %}</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navbar personalizado -->
+  <nav class="navbar navbar-expand-lg" style="background: linear-gradient(90deg, #263837, #1d3d2b, #64500e);">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="{{ url_for('home') }}">
+        Regresión Lineal App
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="regresionDropdown" role="button" data-bs-toggle="dropdown">
+              Regresión Lineal
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('concepto_rl') }}">Conceptos básicos</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('prueba_rl') }}">Ejercicio práctico</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url_for('casos_exito') }}">Casos de Éxito</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-4">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+
+
+  <!-- Botón para volver arriba -->
+  <button id="backToTop" title="Volver arriba">↑</button>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    window.onscroll = function () {
+      const btn = document.getElementById("backToTop");
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btn.style.display = "flex";
+      } else {
+        btn.style.display = "none";
+      }
+    };
+    document.getElementById("backToTop").onclick = function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  </script>
+</body>
+</html>
