@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use('Agg') 
 import matplotlib.pyplot as plt
 import RegresionLineal
-import RegresionLogistica
+import RegresionLogistica as rl
 
 app = Flask(__name__)
 
@@ -95,3 +95,35 @@ def plot_regresion():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# Regresión Logistica abandono
+@app.route("/regresion-logistica/conceptos")
+def conceptos_logistica():
+    return render_template("ConceptLogistica.html")
+
+@app.route("/regresion-logistica/ejercicio", methods=["GET", "POST"])
+def ejercicio_logistica():
+    acc, report, cm_path = rl.evaluate()
+    prediction = None
+    prob = None
+
+    if request.method == "POST":
+        promedio = float(request.form["Promedio"])
+        asistencia = float(request.form["Asistencia"])
+        horas = float(request.form["HorasEstudio"])
+        carrera = request.form["Carrera"]
+
+        import pandas as pd
+        features = pd.DataFrame([[promedio, asistencia, horas, carrera]],
+                                columns=["Promedio", "Asistencia", "HorasEstudio", "Carrera"])
+        features = pd.get_dummies(features, columns=["Carrera"])
+        features = features.reindex(columns=rl.X.columns, fill_value=0)
+
+        prediction, prob = rl.predict_label(features.values[0])
+
+    return render_template("RegresionLogistica.html",
+                           accuracy=acc,
+                           report_text=report,
+                           cm_path=cm_path,
+                           prediction=prediction,
+                           prob=prob)
