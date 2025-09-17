@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Conceptos - Regresión Logística{% endblock %}
+
+{% block content %}
+  <h1 class="hero-title text-center mb-4">Regresión Logística</h1>
+
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">
+      <h2 class="h5 mb-0">Conceptos básicos</h2>
+    </div>
+    <div class="card-body">
+      <p>
+        La regresión logística es un modelo estadístico usado para predecir
+        una <strong>variable binaria</strong> (Sí/No, 0/1) a partir de variables independientes.
+        Su base es la <em>función sigmoide</em>, que transforma una combinación lineal
+        de las variables en una probabilidad entre 0 y 1.
+      </p>
+      <p>
+        En nuestro caso: predecimos si un estudiante <strong>abandona</strong> (1=Sí, 0=No)
+        usando variables como promedio académico, asistencia, horas de estudio y carrera.
+      </p>
+
+      <h5>Referencias</h5>
+      <ul>
+        <li>Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X. (2013).
+          <em>Applied Logistic Regression</em>. John Wiley & Sons.</li>
+        <li>Kleinbaum, D. G., & Klein, M. (2010).
+          <em>Logistic Regression: A Self-Learning Text</em>. Springer.</li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
