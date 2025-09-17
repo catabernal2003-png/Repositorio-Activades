@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <title>Casos de Exito</title>
 </head>
 <body>
     <button id="backToTop" title="Volver arriba">↑</button>
@@ -219,49 +220,7 @@
             </div>
         </div>
 
-    </main>
-
-    <script>
-        function toggleCard(header) {
-            const card = header.parentElement;
-            const content = card.querySelector('.card-content');
-            const allCards = document.querySelectorAll('.card-content');
-
-            allCards.forEach(c => {
-                if (c !== content) {
-                    c.style.maxHeight = null;
-                    c.style.padding = '0 15px';
-                }
-            });
-
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-                content.style.padding = '0 15px';
-            } else {
-                content.style.maxHeight = content.scrollHeight + 'px';
-                content.style.padding = '15px';
-            }
-        }
-    </script>
-<script>
-
-    window.onscroll = function () {
-        const btn = document.getElementById("backToTop");
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            btn.style.display = "flex";
-        } else {
-            btn.style.display = "none";
-        }
-    };
-
-    // Volver arriba con animación suave
-    document.getElementById("backToTop").onclick = function () {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-</script>
-</body>
-</html>
-<!-- CARD 4 -->
+        <!-- CARD 4 -->
         <div class="card">
             <div class="card-header" onclick="toggleCard(this)">
                 <h2>🚗 Aplicación de Transporte (Uber, Didi, Cabify)</h2>
@@ -324,3 +283,46 @@
                 </ul>
             </div>
         </div>
+
+    </main>
+
+    <script>
+        function toggleCard(header) {
+            const card = header.parentElement;
+            const content = card.querySelector('.card-content');
+            const allCards = document.querySelectorAll('.card-content');
+
+            allCards.forEach(c => {
+                if (c !== content) {
+                    c.style.maxHeight = null;
+                    c.style.padding = '0 15px';
+                }
+            });
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.padding = '0 15px';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.padding = '15px';
+            }
+        }
+    </script>
+<script>
+
+    window.onscroll = function () {
+        const btn = document.getElementById("backToTop");
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btn.style.display = "flex";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    // Volver arriba con animación suave
+    document.getElementById("backToTop").onclick = function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>
+</body>
+</html>
