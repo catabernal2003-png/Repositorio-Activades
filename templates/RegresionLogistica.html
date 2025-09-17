@@ -1,21 +1,59 @@
 {% extends "base.html" %}
 
-{% block title %}Resultados - Regresión Logística{% endblock %}
+{% block title %}Ejercicio - Regresión Logística{% endblock %}
 
 {% block content %}
-  <h1 class="hero-title text-center mb-4">Regresión Logística</h1>
+  <h1 class="hero-title text-center mb-4">Ejercicio Práctico - Regresión Logística</h1>
 
   <div class="card mb-4">
     <div class="card-header bg-warning text-dark">
-      <h2 class="h5 mb-0">Matriz de Confusión</h2>
+      <h2 class="h5 mb-0">Matriz de Confusión y Métricas</h2>
     </div>
     <div class="card-body text-center">
-      <img src="{{ url_for('plot_logistica') }}" alt="Matriz de Confusión" class="img-fluid mb-3" style="max-width:600px;">
-      
-      <h3 class="mt-4">Métricas del Modelo</h3>
-      <pre style="text-align:left; background:rgba(255, 255, 255, 0.2); padding:1em; border-radius:8px;">{{ report_text }}</pre>
-      
+      <img src="{{ cm_path }}" alt="Matriz de Confusión" class="img-fluid mb-3" style="max-width:600px;">
+      <h3 class="mt-4">Reporte de Clasificación</h3>
+      <pre style="text-align:left; background:#f9f9f9; padding:1em; border-radius:8px;">{{ report_text }}</pre>
       <p class="fw-bold">Exactitud del modelo: {{ accuracy | round(4) }}</p>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-header bg-success text-white">
+      <h2 class="h5 mb-0">Formulario de Predicción</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Promedio académico</label>
+          <input type="number" step="0.01" name="Promedio" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Asistencia (%)</label>
+          <input type="number" step="1" name="Asistencia" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Horas de estudio</label>
+          <input type="number" step="0.1" name="HorasEstudio" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Carrera</label>
+          <select name="Carrera" class="form-select" required>
+            <option value="Ingeniería">Ingeniería</option>
+            <option value="Medicina">Medicina</option>
+            <option value="Derecho">Derecho</option>
+            <!-- Ajustar a tus datos reales -->
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Predecir</button>
+      </form>
+
+      {% if prediction %}
+        <div class="alert alert-info mt-4 text-center">
+          <h4>Predicción: {{ prediction }}</h4>
+          <p>Probabilidad: {{ prob }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}
+
