@@ -13,7 +13,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 import joblib  
 
-CSV_PATH = "data.csv"  # Ajusta en caso de que el CSV este en otra ruta
+CSV_PATH = "data_abandono.csv"  # Ajusta en caso de que el CSV este en otra ruta
 
 def load_and_prepare(df=None):
     """
