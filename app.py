@@ -5,6 +5,7 @@ import matplotlib
 matplotlib.use('Agg') 
 import matplotlib.pyplot as plt
 import RegresionLineal
+import RegresionLogistica
 
 app = Flask(__name__)
 
@@ -28,12 +29,22 @@ def casos_exito():
 def concepto_rl():
     return render_template("ConceptRL.html")
 
-# Ruta ejercicio práctico
-@app.route("/prueba")
+# Ruta ejercicio práctico Regresion Lineal
+@app.route("/pruebaRL")
 def prueba_rl():
     X, R, y = RegresionLineal.get_training_data()
     data_preview = list(zip(X, R, y))
     return render_template("PruebaRL.html", data_preview=data_preview, resultado=None)
+
+# Ruta ejercicio práctico Regresion Logistica
+@app.route("/pruebaLogistica")
+def prueba_logistica():
+    conf_matrix, accuracy, report, report_text = RegresionLogistica.train_and_evaluate()
+    return render_template("RegresionLogistica.html",
+                           conf_matrix=conf_matrix,
+                           accuracy=accuracy,
+                           report=report,
+                           report_text=report_text)
 
 # Agrega esta ruta adicional para 'precio_vivienda'
 @app.route("/precio_vivienda", methods=["POST"])
@@ -44,6 +55,13 @@ def precio_vivienda():
     X, R, y = RegresionLineal.get_training_data()
     data_preview = list(zip(X, R, y))
     return render_template("PruebaRL.html", data_preview=data_preview, resultado=resultado, metros=metros, habitaciones=habitaciones)
+
+# Agrega esta ruta adicional para el gráfico de regresión logística'
+@app.route("/regresion_logistica/plot.png")
+def plot_logistica():
+    conf_matrix, _, _, _ = RegresionLogistica.train_and_evaluate()
+    buf = RegresionLogistica.plot_confusion_matrix(conf_matrix)
+    return send_file(buf, mimetype="image/png")
 
 # Ruta para el gráfico
 @app.route("/regresion/plot.png")
