@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Conceptos - Regresión Lineal{% endblock %}
+
+{% block content %}
+  <h1 class="hero-title text-center mb-4">Regresión Logisitica</h1>
+
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h2 class="h5 mb-0">Matriz de Confusión</h2>
+    </div>
+    <div class="card-body text-center">
+      <img src="{{ url_for('confusion_matrix_logistica') }}" alt="Matriz de Confusión" class="img-fluid mb-3" style="max-width:600px;">
+      <h3 class="mt-4">Métricas del Modelo</h3>
+      <pre style="text-align:left; background:rgba(255, 255, 255, 0.2); padding:1em; border-radius:8px;">{{ report_text }}</pre>
+      <p class="fw-bold">Exactitud del modelo: {{ accuracy | round(4) }}</p>
+    </div>
+  </div>
+{% endblock %}
