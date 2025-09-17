@@ -9,44 +9,34 @@ import RegresionLogistica as rl
 
 app = Flask(__name__)
 
-# Ruta principal
+# ------------------------
+# Rutas principales
+# ------------------------
 @app.route("/")
 def home():
     return render_template("Home.html")
 
-# Ruta para 'inicio' (necesaria para los templates)
 @app.route("/inicio")
 def inicio():
     return render_template("Home.html")
 
-# Ruta casos de éxito
 @app.route("/casos")
 def casos_exito():
     return render_template("CasosExito.html")
 
-# Ruta conceptos
 @app.route("/concepto")
 def concepto_rl():
     return render_template("ConceptRL.html")
 
-# Ruta ejercicio práctico Regresion Lineal
+# ------------------------
+# Regresión Lineal
+# ------------------------
 @app.route("/pruebaRL")
 def prueba_rl():
     X, R, y = RegresionLineal.get_training_data()
     data_preview = list(zip(X, R, y))
     return render_template("PruebaRL.html", data_preview=data_preview, resultado=None)
 
-# Ruta ejercicio práctico Regresion Logistica
-@app.route("/pruebaLogistica")
-def prueba_logistica():
-    conf_matrix, accuracy, report, report_text = RegresionLogistica.train_and_evaluate()
-    return render_template("RegresionLogistica.html",
-                           conf_matrix=conf_matrix,
-                           accuracy=accuracy,
-                           report=report,
-                           report_text=report_text)
-
-# Agrega esta ruta adicional para 'precio_vivienda'
 @app.route("/precio_vivienda", methods=["POST"])
 def precio_vivienda():
     metros = float(request.form["metros"])
@@ -54,16 +44,12 @@ def precio_vivienda():
     resultado = RegresionLineal.predict_price(metros, habitaciones)
     X, R, y = RegresionLineal.get_training_data()
     data_preview = list(zip(X, R, y))
-    return render_template("PruebaRL.html", data_preview=data_preview, resultado=resultado, metros=metros, habitaciones=habitaciones)
+    return render_template("PruebaRL.html",
+                           data_preview=data_preview,
+                           resultado=resultado,
+                           metros=metros,
+                           habitaciones=habitaciones)
 
-# Agrega esta ruta adicional para el gráfico de regresión logística'
-@app.route("/regresion_logistica/plot.png")
-def plot_logistica():
-    conf_matrix, _, _, _ = RegresionLogistica.train_and_evaluate()
-    buf = RegresionLogistica.plot_confusion_matrix(conf_matrix)
-    return send_file(buf, mimetype="image/png")
-
-# Ruta para el gráfico
 @app.route("/regresion/plot.png")
 def plot_regresion():
     X, R, y = RegresionLineal.get_training_data()
@@ -93,37 +79,47 @@ def plot_regresion():
     buf.seek(0)
     return send_file(buf, mimetype="image/png")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# ------------------------
+# Regresión Logística
+# ------------------------
+@app.route("/pruebaLogistica", methods=["GET", "POST"])
+def prueba_logistica():
+    conf_matrix, accuracy, report, report_text, model = rl.train_and_evaluate()
 
-# Regresión Logistica abandono
-@app.route("/regresion-logistica/conceptos")
-def conceptos_logistica():
-    return render_template("ConceptLogistica.html")
-
-@app.route("/regresion-logistica/ejercicio", methods=["GET", "POST"])
-def ejercicio_logistica():
-    acc, report, cm_path = rl.evaluate()
     prediction = None
     prob = None
-
     if request.method == "POST":
         promedio = float(request.form["Promedio"])
         asistencia = float(request.form["Asistencia"])
         horas = float(request.form["HorasEstudio"])
         carrera = request.form["Carrera"]
 
-        import pandas as pd
-        features = pd.DataFrame([[promedio, asistencia, horas, carrera]],
-                                columns=["Promedio", "Asistencia", "HorasEstudio", "Carrera"])
-        features = pd.get_dummies(features, columns=["Carrera"])
-        features = features.reindex(columns=rl.X.columns, fill_value=0)
+        result = rl.predict_single(promedio, asistencia, horas, carrera, model=model)
+        prediction = "Sí" if result["clase"] == 1 else "No"
+        prob = f"{result['probabilidad']:.4f}"
 
-        prediction, prob = rl.predict_label(features.values[0])
-
+    cm_path = "/regresion_logistica/plot.png"
     return render_template("RegresionLogistica.html",
-                           accuracy=acc,
-                           report_text=report,
+                           conf_matrix=conf_matrix,
+                           accuracy=accuracy,
+                           report_text=report_text,
                            cm_path=cm_path,
                            prediction=prediction,
                            prob=prob)
+
+@app.route("/regresion_logistica/plot.png")
+def plot_logistica():
+    conf_matrix, _, _, _, _ = rl.train_and_evaluate()
+    buf = rl.plot_confusion_matrix(conf_matrix)
+    return send_file(buf, mimetype="image/png")
+
+# Ruta conceptos de logística
+@app.route("/regresion-logistica/conceptos")
+def conceptos_logistica():
+    return render_template("ConceptLogistica.html")
+
+# ------------------------
+# Main
+# ------------------------
+if __name__ == "__main__":
+    app.run(debug=True)

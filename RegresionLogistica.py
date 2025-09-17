@@ -13,29 +13,46 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 import joblib  
 
-CSV_PATH = "data_abandono.csv"  # Ajusta en caso de que el CSV este en otra ruta
+CSV_PATH = "data_abandono.csv"
 
-def load_and_prepare(df=None):
-    """
-    Carga el dataset (si no se provee) y devuelve X, y.
-    Espera columnas: Promedio, Asistencia, HorasEstudio, Carrera, Abandona
-    """
-    if df is None:
-        df = pd.read_csv(CSV_PATH)
+def load_and_prepare():
+    # Leer usando coma como separador
+    df = pd.read_csv(CSV_PATH, sep=",")
 
-    # Normalizar nombres de columnas por si acaso
-    df = df.rename(columns=lambda s: s.strip())
+    # Limpiar encabezados (por si hay espacios extras)
+    df.columns = df.columns.str.strip()
+    # Renombrar columnas primero
+    df = df.rename(columns={
+        "promedio_academico": "Promedio",
+        "asistencia": "Asistencia",
+        "horas_estudio": "HorasEstudio", 
+        "abandono": "Abandona"
+    })
 
-    # Verifica columnas necesarias
     expected = {"Promedio", "Asistencia", "HorasEstudio", "Carrera", "Abandona"}
-    if not expected.issubset(set(df.columns)):
-        raise ValueError(f"Faltan columnas. Se requieren: {expected}. Columnas encontradas: {set(df.columns)}")
+    if not expected.issubset(df.columns):
+        raise ValueError(
+            f"Faltan columnas. Se requieren: {expected}. Columnas encontradas: {set(df.columns)}"
+        )
 
-    X = df[["Promedio", "Asistencia", "HorasEstudio", "Carrera"]].copy()
-    y = df["Abandona"].astype(int).copy()  # 0/1
 
+    # Normalizar columna Abandona
+    df["Abandona"] = df["Abandona"].astype(str).str.strip().str.lower()
+    df["Abandona"] = df["Abandona"].replace({
+        "si": 1, "sí": 1, "1": 1,
+        "no": 0, "0": 0
+    })
+
+    if df["Abandona"].isna().any():
+        raise ValueError(
+            f"Se encontraron valores no reconocidos en 'Abandona': {df['Abandona'].unique()}"
+        )
+
+
+    X = df.drop("Abandona", axis=1)
+    y = df["Abandona"]
     return X, y
-
+    
 def build_pipeline():
     """
     Construye un pipeline que aplica OneHot a 'Carrera' y StandardScaler a numéricos,
@@ -47,7 +64,7 @@ def build_pipeline():
     preprocessor = ColumnTransformer(
         transformers=[
             ("num", StandardScaler(), numeric_features),
-            ("cat", OneHotEncoder(handle_unknown="ignore", sparse=False), categorical_features),
+            ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_features),
         ],
         remainder="drop",
     )
