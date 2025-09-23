@@ -11,8 +11,8 @@ html {
     margin: 0;
     padding: 0;
     width: 100%;
-    min-height: 100%;   /* en vez de 100vh */
-    overflow-y: auto;   /* asegura scroll */
+    min-height: 100%;   
+    overflow-y: auto;   
 }
 
 body {

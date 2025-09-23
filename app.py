@@ -119,6 +119,17 @@ def conceptos_logistica():
     return render_template("ConceptLogistica.html")
 
 # ------------------------
+# Algoritmos de Clasificación
+# ------------------------
+@app.route("/conceptos-clasificacion")
+def conceptos_clasificacion():
+    return render_template("conceptos_clasificacion.html")
+
+@app.route("/caso-practico-clasificacion")
+def caso_practico_clasificacion():
+    return render_template("caso_practico_clasificacion.html")
+
+# ------------------------
 # Main
 # ------------------------
 if __name__ == "__main__":

@@ -16,6 +16,16 @@
           <li class="nav-item"><a class="nav-link" href="{{ url_for('prueba_rl') }}">Regresión Lineal</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('prueba_logistica') }}">Regresión Logística</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('casos_exito') }}">Casos de Éxito</a></li>
+          <!-- Menú desplegable de clasificación -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="clasificacionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Tipos de Algoritmos de Clasificación
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="clasificacionDropdown">
+              <li><a class="dropdown-item" href="{{ url_for('conceptos_clasificacion') }}">Conceptos básicos</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('caso_practico_clasificacion') }}">Caso práctico</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
@@ -24,5 +34,6 @@
   <div class="container">
     {% block content %}{% endblock %}
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

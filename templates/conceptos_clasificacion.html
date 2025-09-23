@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Conceptos básicos - Algoritmos de Clasificación{% endblock %}
+
+{% block content %}
+  <h1 class="hero-title text-center mb-4">Conceptos básicos de Algoritmos de Clasificación</h1>
+  <p>
+    Los algoritmos de clasificación son métodos de aprendizaje supervisado que permiten asignar una etiqueta o categoría a un conjunto de datos. 
+    Su objetivo principal es predecir la clase a la que pertenece una nueva instancia, basándose en ejemplos previos.
+  </p>
+  <h2>¿Cómo funcionan?</h2>
+  <p>
+    El proceso de clasificación implica entrenar un modelo con datos etiquetados. El modelo aprende patrones y relaciones entre las características de los datos y sus respectivas clases. 
+    Una vez entrenado, puede clasificar nuevos datos desconocidos.
+  </p>
+  <h2>Ejemplos de algoritmos de clasificación</h2>
+  <ul>
+    <li><strong>Regresión logística:</strong> Utilizado para problemas binarios (dos clases).</li>
+    <li><strong>Árboles de decisión:</strong> Modelos que dividen los datos en ramas según sus características.</li>
+    <li><strong>K-Nearest Neighbors (KNN):</strong> Clasifica según la cercanía a otros ejemplos.</li>
+    <li><strong>Máquinas de soporte vectorial (SVM):</strong> Encuentra el mejor límite entre clases.</li>
+    <li><strong>Redes neuronales:</strong> Modelos complejos inspirados en el cerebro humano.</li>
+  </ul>
+  <h2>Aplicaciones</h2>
+  <ul>
+    <li>Detección de spam en correos electrónicos</li>
+    <li>Diagnóstico médico</li>
+    <li>Reconocimiento de imágenes</li>
+    <li>Clasificación de textos</li>
+  </ul>
+{% endblock %}
