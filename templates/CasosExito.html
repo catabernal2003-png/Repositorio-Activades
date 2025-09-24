@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <title>Casos de Exito</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Casos de Éxito - App de Modelos{% endblock %}
+
+{% block content %}
     <button id="backToTop" title="Volver arriba">↑</button>
     <a href="{{ url_for('home') }}" class="btn-home">← Volver al Home</a>
 
-    <!-- Contenedor principal -->
     <main class="container">
         <h1 class="hero-title">{{ name }} - Investigación de Casos de Uso en ML Supervisado</h1>
+        
         <!-- CARD 1 -->
         <div class="card">
             <div class="card-header" onclick="toggleCard(this)">
@@ -307,22 +302,18 @@
                 content.style.padding = '15px';
             }
         }
+
+        window.onscroll = function () {
+            const btn = document.getElementById("backToTop");
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btn.style.display = "flex";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+
+        document.getElementById("backToTop").onclick = function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
     </script>
-<script>
-
-    window.onscroll = function () {
-        const btn = document.getElementById("backToTop");
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            btn.style.display = "flex";
-        } else {
-            btn.style.display = "none";
-        }
-    };
-
-    // Volver arriba con animación suave
-    document.getElementById("backToTop").onclick = function () {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-</script>
-</body>
-</html>
+{% endblock %}

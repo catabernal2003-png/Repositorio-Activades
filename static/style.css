@@ -7,22 +7,30 @@ html {
     font-size: 12pt;
     line-height: 18pt;
     font-weight: 400;
-    color: #4facfe;
+    color: #ff6b35;
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100%;   /* en vez de 100vh */
     overflow-y: auto;   /* asegura scroll */
 }
+.text-white {
+    color: #fff !important;
+}
 
 body {
+    position: relative;
+    min-height: 100vh;
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #1f1c2c, #928DAB);
-    background-attachment: fixed;
-    display: block;
-    padding: 50px 20px;
-    box-sizing: border-box;
     overflow-x: hidden;
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #222 0%, #444 100%);
+    filter: blur(8px);
 }
 
 /* Títulos */
@@ -30,9 +38,10 @@ body {
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
-    background: linear-gradient(90deg, #4facfe, #7366ff, #f86cf8);
+    background: linear-gradient(90deg, #ff6b35, #f7931e, #ff4757);
     background-size: 300% 300%;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradientMove 6s ease infinite;
     text-transform: uppercase;
@@ -41,7 +50,6 @@ body {
     max-width: 90%;
     line-height: 1.4;
     position: relative;
-    text-shadow: 0px 0px 15px rgba(0,0,0,0.6);
 }
 
 @keyframes gradientMove {
@@ -62,7 +70,7 @@ body {
 .button-link {
     display: inline-block;
     padding: 14px 28px;
-    background: linear-gradient(135deg, rgb(49, 228, 219), rgb(59, 199, 117), rgb(235, 194, 60));
+    background: linear-gradient(135deg, #ff6b35, #f7931e, #ff4757);
     color: white;
     font-family: system-ui, sans-serif;
     text-decoration: none;
@@ -85,12 +93,10 @@ p {
     text-align: justify;
     line-height: 1.6;
     margin: 1em auto;
-    color:#ddd;
-
 }
 
 h2 {
-    font-family: 'Courier New', Courier, monospace;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-top: 1.5em;
 }
 
@@ -106,7 +112,7 @@ h2 {
 /* Tarjetas (acordeón) */
 .card {
     background: rgba(0, 0, 0, 0.7);
-    border: 1px solid #12a31e;
+    border: 1px solid #ff4757;
     border-radius: 15px;
     margin: 20px auto;
     width: 90%;
@@ -118,7 +124,7 @@ h2 {
 
 .card-header {
     padding: 15px;
-    background: #12a31e;
+    background: #ff4757;
     color: white;
     font-weight: bold;
     text-align: center;
@@ -126,13 +132,13 @@ h2 {
 }
 
 .card-header:hover {
-    background: #6abb0e;
+    background: #ff6b35;
 }
 
 .card-content {
     padding: 0 15px;
     transition: max-height 0.5s ease, padding 0.3s ease;
-    color: beige;
+    color: #000000;
     line-height: 1.5;
     max-height: 0;
     overflow: hidden;
@@ -151,7 +157,7 @@ h2 {
     bottom: 30px;
     right: 30px;
     z-index: 1000;
-    background: linear-gradient(90deg, #31e4db, #3bc775, #ebc23c, #ff6f61);
+    background: linear-gradient(90deg, #ff6b35, #f7931e, #ff4757, #ff3838);
     color: white;
     border: none;
     border-radius: 50%;
@@ -178,7 +184,7 @@ h2 {
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
-    background: linear-gradient(90deg, #31e4db, #3bc775, #ebc23c, #ff6f61);
+    background: linear-gradient(90deg, #ff6b35, #f7931e, #ff4757, #ff3838);
     color: white;
     border-radius: 30px;
     text-decoration: none;
@@ -215,9 +221,55 @@ h2 {
     }
 }
 
+/* Tarjeta Regresión Lineal */
+.card-header.bg-primary {
+    background: linear-gradient(90deg, #1e88a8, #2844c5);
+    color: #ffffff11;
+}
+.card.regresion-lineal {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+
+/* Tarjeta Regresión Logística */
+.card-header.bg-warning {
+    background: linear-gradient(90deg, #f7931e, #ff4757);
+    color: #ffffff11;
+}
+.card.regresion-logistica {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+
+/* Tarjeta Algoritmos de Clasificación */
+.card-header.bg-info {
+    background: linear-gradient(90deg, #5147d3, #0dcaf0);
+    color: #ffffff11;
+}
+.card.clasificacion {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+
+/* Tarjeta Casos de Éxito */
+.card-header.bg-success {
+    background: linear-gradient(90deg, #198754, rgb(53, 194, 18));
+    color: #ffffff11;
+}
+.card.casos-exito {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+.btn-outline-success,
+.btn-outline-success.custom-btn-contrast {
+    color: #8afa48 !important; 
+    font-weight: bold;
+    text-shadow: 0 1px 8px #19875455;
+}
+
 /* Otros estilos */
 h1, h2, h3, h4 {
-    color: #fff;
+    color: #ffffff86;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
 }
@@ -232,7 +284,7 @@ li {
 }
 
 .referencias a {
-    color: #31e4db;
+    color: #f7931e;
     text-decoration: none;
 }
 
@@ -254,7 +306,7 @@ input[type="number"] {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     box-sizing: border-box;
     max-width: 300px;
 }
@@ -272,5 +324,5 @@ th, td {
 }
 
 th {
-    background-color: rgba(18, 163, 30, 0.3);
+    background-color: rgba(255, 71, 87, 0.3);
 }
