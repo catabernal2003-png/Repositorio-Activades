@@ -27,6 +27,12 @@ def load_data():
     return X, y
 
 def evaluate():
+    """
+    Entrena un modelo Naive Bayes, lo evalúa y guarda los resultados.
+    - Guarda el modelo entrenado en un archivo .pkl.
+    - Guarda una imagen de la matriz de confusión.
+    - Devuelve un diccionario con las métricas de rendimiento.
+    """
     X, y = load_data()
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, stratify=y, random_state=RANDOM_STATE
@@ -54,6 +60,12 @@ def evaluate():
     return {"accuracy": acc, "report": report, "conf_matrix": cm.tolist()}
 
 def predict_label(features, threshold=0.5):
+    """
+    Carga el modelo entrenado y predice si un correo es spam.
+    - features: Una lista de características en el orden correcto.
+    - threshold: El umbral de probabilidad para clasificar como spam.
+    - Devuelve la etiqueta ('Sí'/'No') y la probabilidad de spam.
+    """
     model = joblib.load(MODEL_PATH)
     prob_spam = model.predict_proba([features])[0][1]
     label = "Sí" if prob_spam >= threshold else "No"
