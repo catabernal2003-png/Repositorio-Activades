@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import RegresionLineal
 import RegresionLogistica as rl
 from flask import Flask, request, render_template
-import LinearRegressionExample
 from SpamClassifier import evaluate, predict_label
 
 
@@ -160,7 +159,19 @@ def conceptos_clasificacion():
 
 @app.route("/caso-practico-clasificacion")
 def caso_practico_clasificacion():
-    return render_template("caso_practico_clasificacion.html")
+    # Métricas de ejemplo, reemplaza por tus datos reales si los tienes
+    spam_metrics = {"accuracy": 0.95}
+    prediction = None
+    if request.method == "POST":
+        vars_order = ["freq_gratis","freq_promocion","freq_urgente",
+                      "tiene_link","remitente_conocido","num_adjuntos"]
+        features = [float(request.form[v]) for v in vars_order]
+        threshold = float(request.form.get("threshold", 0.5))
+        label, prob = predict_label(features, threshold)
+        prediction = {"label": label, "prob": prob, "threshold": threshold}
+    return render_template("caso_practico_clasificacion.html",
+                           metrics=spam_metrics,
+                           prediction=prediction)
 
 # ------------------------
 # Main
