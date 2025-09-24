@@ -128,11 +128,16 @@ def clasific_conceptos():
     # Página con el enlace/iframe a tu mapa MindMeister
     return render_template("clasific_basicos.html")
 
+# --- Optimización: Entrenar el modelo de Spam una sola vez al iniciar ---
+# Se llama a evaluate() para entrenar el modelo y generar la imagen de la matriz.
+# Las métricas se guardan en una variable para reutilizarlas en cada petición.
+print("Entrenando el modelo de clasificación de Spam al iniciar la app...")
+spam_metrics = evaluate()
+print("Modelo de Spam entrenado y listo.")
+
 @app.route("/tipos-clasificacion/caso", methods=["GET", "POST"])
 def clasific_caso():
-    metrics = evaluate()   # entrena y obtiene métricas
     prediction = None
-
     if request.method == "POST":
         # Captura las 6 variables en el orden exacto
         vars_order = ["freq_gratis","freq_promocion","freq_urgente",
@@ -143,7 +148,7 @@ def clasific_caso():
         prediction = {"label": label, "prob": prob, "threshold": threshold}
 
     return render_template("clasific_caso.html",
-                           metrics=metrics,
+                           metrics=spam_metrics,
                            prediction=prediction)
 
 # ------------------------
