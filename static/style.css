@@ -326,3 +326,57 @@ th, td {
 th {
     background-color: rgba(255, 71, 87, 0.3);
 }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+  grid-gap: 20px;
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+.nose {
+  display: flex;
+  flex-direction: column;
+}
+
+.nose label {
+  font-weight: bold;
+  color: #ff4444; /* visible en fondo oscuro */
+  margin-bottom: 5px;
+  text-decoration: underline;
+  text-decoration-color: #00ffcc; /* subrayado con contraste */
+}
+
+.nose input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Sección Threshold + Botón centrados */
+.form-extra {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-extra .nose {
+  margin-bottom: 15px;
+}
+
+.form-extra button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.form-extra button:hover {
+  background-color: #0056b3;
+}
