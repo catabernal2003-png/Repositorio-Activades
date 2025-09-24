@@ -159,7 +159,7 @@ def conceptos_clasificacion():
 
 @app.route("/caso-practico-clasificacion")
 def caso_practico_clasificacion():
-    # Métricas de ejemplo, reemplaza por tus datos reales si los tienes
+   
     spam_metrics = {"accuracy": 0.95}
     prediction = None
     if request.method == "POST":
