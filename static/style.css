@@ -14,15 +14,23 @@ html {
     min-height: 100%;   /* en vez de 100vh */
     overflow-y: auto;   /* asegura scroll */
 }
+.text-white {
+    color: #fff !important;
+}
 
 body {
+    position: relative;
+    min-height: 100vh;
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #2c1f1f, #AB8D92);
-    background-attachment: fixed;
-    display: block;
-    padding: 50px 20px;
-    box-sizing: border-box;
     overflow-x: hidden;
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #222 0%, #444 100%);
+    filter: blur(8px);
 }
 
 /* Títulos */
@@ -213,9 +221,55 @@ h2 {
     }
 }
 
+/* Tarjeta Regresión Lineal */
+.card-header.bg-primary {
+    background: linear-gradient(90deg, #1e88a8, #2844c5);
+    color: #ffffff11;
+}
+.card.regresion-lineal {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+
+/* Tarjeta Regresión Logística */
+.card-header.bg-warning {
+    background: linear-gradient(90deg, #f7931e, #ff4757);
+    color: #ffffff11;
+}
+.card.regresion-logistica {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+
+/* Tarjeta Algoritmos de Clasificación */
+.card-header.bg-info {
+    background: linear-gradient(90deg, #5147d3, #0dcaf0);
+    color: #ffffff11;
+}
+.card.clasificacion {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+
+/* Tarjeta Casos de Éxito */
+.card-header.bg-success {
+    background: linear-gradient(90deg, #198754, rgb(53, 194, 18));
+    color: #ffffff11;
+}
+.card.casos-exito {
+    background: rgba(0,0,0,0.3);
+    border: none;
+}
+.btn-outline-success,
+.btn-outline-success.custom-btn-contrast {
+    color: #8afa48 !important; 
+    font-weight: bold;
+    text-shadow: 0 1px 8px #19875455;
+}
+
 /* Otros estilos */
 h1, h2, h3, h4 {
-    color: #fff;
+    color: #ffffff86;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
 }
