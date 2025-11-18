@@ -1,106 +1,134 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
 {% block title %}Entrenamiento Q-Learning{% endblock %}
 
 {% block content %}
 
 <style>
-/* ====== Estilos Mejorados ====== */
+/* ========== ESTILO GENERAL PREMIUM ========== */
+body {
+    background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 50%, #1c1c1c 100%);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ---------- Caja principal con efecto cristal ---------- */
 .section-box {
-    background: rgba(255,255,255,0.05);
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    border-left: 4px solid #ff6b35;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.06);
+    padding: 28px;
+    border-radius: 15px;
+    margin-bottom: 28px;
+    border-left: 5px solid #ff6b35;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
 .section-box h3 {
-    color: #ffae72;
+    color: #ffb88c;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
+/* ---------- Etiquetas e inputs ---------- */
 .section-box label {
-    color: #ffd1bb;
+    color: #ffd9c7;
     font-weight: bold;
     margin-bottom: 8px;
     display: block;
+    font-size: 0.95rem;
 }
 
 .section-box input {
-    background: rgba(255,255,255,0.9);
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 10px;
+    background: rgba(255,255,255,0.92);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 11px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.15);
+    transition: all 0.25s ease;
 }
 
 .section-box input:focus {
-    background: rgba(255,255,255,0.95);
-    box-shadow: 0 0 8px rgba(255,107,53,0.5);
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(255,107,53,0.65);
+    transform: scale(1.02);
 }
 
+/* ---------- Botones mejorados ---------- */
 .btn-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 25px;
+    gap: 15px;
+    margin-top: 28px;
 }
 
 #trainBtn, #simulateBtn {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     font-weight: bold;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
-    transition: all 0.3s ease;
+    font-size: 1.05rem;
+    transition: all 0.28s ease;
+    letter-spacing: 0.5px;
 }
 
 #trainBtn {
-    background: linear-gradient(90deg, #ff6b35, #f7931e);
+    background: linear-gradient(90deg, #ff6b35, #ff914d);
     color: white;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 #simulateBtn {
-    background: linear-gradient(90deg, #28a745, #66dd77);
+    background: linear-gradient(90deg, #1bbb4f, #72e085);
     color: white;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 #trainBtn:hover, #simulateBtn:hover {
-    transform: scale(1.04);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transform: scale(1.06);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
 }
 
+/* ---------- Estado de proceso ---------- */
 #status {
-    font-size: 1.1rem;
-    color: #ffe5d4;
+    font-size: 1.2rem;
+    color: #ffe9dd;
     font-weight: bold;
-    padding: 15px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
+    padding: 18px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 10px;
     text-align: center;
-    min-height: 50px;
+    min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
+/* ---------- Gráficos y contenedores ---------- */
 .graph-container {
-    background: rgba(255,255,255,0.03);
-    padding: 15px;
-    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .graph-container img {
-    border-radius: 12px;
-    border: 2px solid #444;
+    border-radius: 15px;
+    border: 2px solid rgba(255,255,255,0.15);
     width: 100%;
     height: auto;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
-/* Asegurar altura completa para las columnas */
+/* ---------- Panel lateral con sticky ---------- */
 .left-panel, .right-panel {
     display: flex;
     flex-direction: column;
@@ -110,9 +138,17 @@
     position: sticky;
     top: 20px;
 }
+
+/* ---------- Título principal ---------- */
+h1 {
+    text-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: white;
+}
 </style>
 
-<h1 style="color:white; margin-bottom: 30px;">Entrenamiento Q-Learning</h1>
+<h1 style="margin-bottom: 30px;">Entrenamiento Q-Learning</h1>
 
 <!-- =============================
       DISEÑO EN 2 COLUMNAS
