@@ -63,9 +63,50 @@
 
     <h3 class="rl-subtitle">Algoritmos principales</h3>
     <p>
-        <strong>Q-Learning:</strong> método fuera de política que aprende el valor de cada acción por estado.<br>
-        <strong>SARSA:</strong> método en política que actualiza usando la acción realmente tomada.<br>
-        <strong>Deep Q-Network (DQN):</strong> usa redes neuronales para aproximar la función Q en espacios grandes.
+        <strong>A. Q-Learning</strong>
+            <p class="card-text">Método fuera de política (off-policy) que aprende el valor de cada acción en un estado.</p>
+            <p class="card-text">Actualiza mediante: Q(s,a)←Q(s,a)+α[r+γa′max​Q(s′,a′)−Q(s,a)]</p>
+                <p>
+                    <strong>Ventajas:</strong>
+                        <ol>
+                            <li class="list-group-item"> Convergencia demostrada.</li>
+                            <li class="list-group-item"> Fácil de implementar.</li>
+                            <li class="list-group-item"> Ideal para GridWorld, CartPole, MountainCar.</li>
+                        </ol>
+                </p>
+    </p>
+    <p>    
+        <strong>B. SARSA</strong>
+            <p class="card-text">Método on-policy que aprende siguiendo la misma política que usa para actuar.</p>
+            <p class="card-text">Q(s,a)←Q(s,a)+α[r+γQ(s′,a′)−Q(s,a)]</p>
+                <p>
+                    <strong>Aplicaciones:</strong>
+                        <ol>
+                            <li class="list-group-item"> Control continuo con riesgo.</li>
+                            <li class="list-group-item"> Sistemas donde seguir la política actual es crítico.</li>
+                        </ol>
+                </p>
+    </p>
+    <p>    
+        <strong>C. Deep Q-Network (DQN)</strong>
+            <p class="card-text">Extiende Q-Learning usando redes neuronales profundas para aproximar Q(s, a).</p>
+              <p>
+                <strong>Elementos clave:</strong>
+                    <ol>
+                        <li class="list-group-item"> Replay Buffer.</li>
+                        <li class="list-group-item"> Target Network.</li>
+                        <li class="list-group-item"> Estabilización del entrenamiento.</li>
+                    </ol>
+                </p>
+                <p>    
+                  <strong>Aplicaciones:</strong>
+                    <ol>
+                        <li class="list-group-item"> Atari Games.</li>
+                        <li class="list-group-item"> Robótica.</li>
+                        <li class="list-group-item"> Vehiculos autónomos.</li>
+                        <li class="list-group-item"> Sistemas complejos con espacios de estados enormes</li>
+                    </ol>
+                </p>
     </p>
 
     <h3 class="rl-subtitle">Buenas prácticas</h3>
