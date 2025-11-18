@@ -1,7 +1,7 @@
 # Repositorio-Activades
 En este repositorio se desarrollaran todos los ejercicios propuestos en clase
 
-##Aprendizaje por Refuerzo — Implementación Q-Learning con Flask
+## Aprendizaje por Refuerzo — Implementación Q-Learning con Flask
 
 Este proyecto implementa un agente de **Aprendizaje por Refuerzo (Reinforcement Learning)** usando el algoritmo **Q-Learning** dentro de un entorno tipo **GridWorld**, permitiendo entrenar, visualizar y simular el comportamiento del agente mediante una interfaz web construida con **Flask**.
 
