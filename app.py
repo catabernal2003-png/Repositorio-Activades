@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 import io
 import numpy as np
 import matplotlib
@@ -185,7 +185,6 @@ TRAINING_PARAMS = {
 'gamma': 0.99,
 'eps_start': 1.0,
 'eps_decay': 0.995,
-'eps_min': 0.01
 }
 
 
@@ -204,25 +203,42 @@ def caso_practico_rl():
     )
 
 
-
 @app.route('/reinforcement/train', methods=['POST'])
 def train_rl():
-    params = request.json or {}
-    for k in TRAINING_PARAMS:
-        if k in params:
-            TRAINING_PARAMS[k] = params[k]
+    data = request.get_json()
+
+    TRAINING_PARAMS['episodes'] = data['episodes']
+    TRAINING_PARAMS['alpha'] = data['alpha']
+    TRAINING_PARAMS['gamma'] = data['gamma']
+    TRAINING_PARAMS['epsilon'] = data.get('epsilon', 1.0)
+    TRAINING_PARAMS['epsilon_decay'] = data.get('epsilon_decay', 0.995)
+
+    thread = threading.Thread(target=_train_and_save)
+    thread.start()
+
+    return jsonify({'status': 'training_started'})
+
     
-    def _train_and_save():
-        env = GridWorldEnv(nrows=6, ncols=6, start=(0,0), goal=(5,5), holes=[(1,3),(2,3),(3,3)])
-        Q, rewards = train_q_learning(env, episodes=TRAINING_PARAMS['episodes'],
-                                    alpha=TRAINING_PARAMS['alpha'],
-                                    gamma=TRAINING_PARAMS['gamma'],
-                                    eps_start=TRAINING_PARAMS['eps_start'],
-                                    eps_decay=TRAINING_PARAMS['eps_decay'],
-                                    eps_min=TRAINING_PARAMS['eps_min'])
-        os.makedirs('models', exist_ok=True)
-        save_model(Q, 'models/q_table.pkl')
-        plot_rewards(rewards, 'static/images/rewards.png')
+def _train_and_save():
+    env = GridWorldEnv(
+        nrows=6, ncols=6,
+        start=(0, 0), goal=(5, 5),
+        holes=[(1, 3), (2, 3), (3, 3)]
+    )
+
+    Q, rewards = train_q_learning(
+        env,
+        episodes=TRAINING_PARAMS['episodes'],
+        alpha=TRAINING_PARAMS['alpha'],
+        gamma=TRAINING_PARAMS['gamma'],
+        epsilon=TRAINING_PARAMS['eps_start'],      
+        epsilon_decay=TRAINING_PARAMS['eps_decay'] 
+    )
+
+    os.makedirs('models', exist_ok=True)
+    save_model(Q, 'models/q_table.pkl')
+    plot_rewards(rewards, 'static/images/rewards.png')
+
     
     thread = threading.Thread(target=_train_and_save)
     thread.start()
