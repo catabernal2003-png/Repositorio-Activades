@@ -7,9 +7,93 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <style>
+    /* Fondo con degradado */
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      color: white;
+    }
+
+    /* Efecto glassmorphism del navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.4) !important;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Hover más elegante */
+    .navbar-nav .nav-link:hover {
+      color: #00eaff !important;
+      transform: scale(1.02);
+      transition: 0.2s;
+    }
+
+    /* Fondos suaves animados */
+    .bg-shapes .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: move 12s infinite alternate;
+    }
+
+    .bg-shapes .shape:nth-child(1) {
+      width: 350px;
+      height: 350px;
+      background: #00d4ff;
+      top: -80px;
+      left: -80px;
+    }
+
+    .bg-shapes .shape:nth-child(2) {
+      width: 400px;
+      height: 400px;
+      background: #ff00c8;
+      bottom: -100px;
+      right: -100px;
+    }
+
+    .bg-shapes .shape:nth-child(3) {
+      width: 300px;
+      height: 300px;
+      background: #00ff85;
+      top: 40%;
+      left: -120px;
+    }
+
+    .bg-shapes .shape:nth-child(4) {
+      width: 250px;
+      height: 250px;
+      background: #ffd000;
+      top: 10%;
+      right: -120px;
+    }
+
+    @keyframes move {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(40px, -40px); }
+    }
+
+    /* Contenido en tarjetas con glass effect */
+    .container {
+      margin-top: 30px;
+    }
+
+    .content-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+    }
+  </style>
+
   {% block styles %}{% endblock %}
 </head>
+
 <body>
+
   <!-- Background shapes -->
   <div class="bg-shapes">
     <div class="shape"></div>
@@ -19,11 +103,12 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <nav class="navbar navbar-expand-lg navbar-dark mb-4">
     <div class="container">
-      <a class="navbar-brand" href="{{ url_for('home') }}">📊 App Regresión</a>
+      <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">📊 App Regresión</a>
       <div>
         <ul class="navbar-nav">
+
           <li class="nav-item"><a class="nav-link" href="{{ url_for('inicio') }}">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('prueba_rl') }}">Regresión Lineal</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('prueba_logistica') }}">Regresión Logística</a></li>
@@ -31,21 +116,23 @@
 
           <!-- Menú Clasificación -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="clasificacionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Tipos de Algoritmos de Clasificación
+            <a class="nav-link dropdown-toggle" href="#" id="clasificacionDropdown" role="button" 
+               data-bs-toggle="dropdown" aria-expanded="false">
+              Clasificación
             </a>
-            <ul class="dropdown-menu" aria-labelledby="clasificacionDropdown">
+            <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('conceptos_clasificacion') }}">Conceptos básicos</a></li>
               <li><a class="dropdown-item" href="{{ url_for('caso_practico_clasificacion') }}">Caso práctico</a></li>
             </ul>
           </li>
 
-          <!-- Menú Aprendizaje por Refuerzo -->
+          <!-- Menú RL -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="rlDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="rlDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
               Aprendizaje por Refuerzo
             </a>
-            <ul class="dropdown-menu" aria-labelledby="rlDropdown">
+            <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('conceptos_rl') }}">Conceptos básicos</a></li>
               <li><a class="dropdown-item" href="{{ url_for('caso_practico_rl') }}">Caso práctico</a></li>
             </ul>
@@ -57,7 +144,9 @@
   </nav>
 
   <div class="container">
-    {% block content %}{% endblock %}
+    <div class="content-card">
+      {% block content %}{% endblock %}
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
