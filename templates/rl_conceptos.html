@@ -70,9 +70,10 @@
 
     <h3 class="rl-subtitle">Buenas prácticas</h3>
     <p>
-        Ajuste correcto de la tasa de exploración (ε), manejo adecuado de recompensas, estabilidad del aprendizaje,
-        normalización y control del factor de descuento (γ). La convergencia depende de un equilibrio entre exploración
-        y explotación y de una suficiente cantidad de episodios.
+        <strong> Ajuste correcto de la tasa de exploración (ε):</strong>usar un annealing (ε_decrease) desde un ε inicial alto hasta un ε mínimo para explorar al inicio y explotar luego.<br>
+        <strong>Normalización de recompensas:</strong> facilita el aprendizaje al mantener las recompensas en un rango manejable.<br>
+        <strong>Convergencia y generalización:</strong>validar con semillas aleatorias diferentes, checkpointing (guardar modelos periódicamente), y probar en variaciones del entorno.validar con semillas aleatorias diferentes, checkpointing (guardar modelos periódicamente), y probar en variaciones del entorno.<br>
+        <strong>Monitoreo de métricas clave:</strong> seguimiento de recompensas acumuladas, pérdidas y tasas de exploración para evaluar el progreso del entrenamiento.<br>
     </p>
 
     <h3 class="rl-subtitle">Referencias</h3>
