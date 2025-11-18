@@ -16,8 +16,12 @@ import joblib
 CSV_PATH = "data_abandono.csv"
 
 def load_and_prepare():
-    # Leer usando coma como separador
-    df = pd.read_csv(CSV_PATH, sep=",")
+    try:
+        # Leer usando coma como separador
+        df = pd.read_csv(CSV_PATH, sep=",")
+    except FileNotFoundError:
+        # Si el archivo no existe, devolvemos None para que la función que llama maneje el error.
+        return None, None
 
     # Limpiar encabezados (por si hay espacios extras)
     df.columns = df.columns.str.strip()
@@ -80,6 +84,10 @@ def train_and_evaluate(test_size=0.2, random_state=42, persist_model=False, mode
     Si persist_model=True guarda el pipeline con joblib.
     """
     X, y = load_and_prepare()
+    
+    # Si load_and_prepare devuelve None, significa que el CSV no se encontró.
+    if X is None:
+        return None, None, None, None, None
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
 

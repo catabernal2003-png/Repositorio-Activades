@@ -2,39 +2,73 @@ from flask import Flask, render_template, request, send_file
 import io
 import numpy as np
 import matplotlib
-matplotlib.use('Agg') 
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import RegresionLineal
 import RegresionLogistica as rl
-from flask import Flask, request, render_template
 from SpamClassifier import evaluate, predict_label
 
 
 app = Flask(__name__)
 
+# --- Optimización: Entrenar los modelos una sola vez al iniciar ---
+
+# 1. Modelo de Clasificación de Spam
+print("Entrenando el modelo de clasificación de Spam...")
+spam_metrics = evaluate()
+print("-> Modelo de Spam entrenado y listo.")
+
+# 2. Modelo de Regresión Logística
+print("Entrenando el modelo de Regresión Logística...")
+{% extends "base.html" %}
+
+{% block title %}Error en la Aplicación{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="alert alert-danger text-center" role="alert">
+    <h4 class="alert-heading">¡Ha ocurrido un error!</h4>
+    <p>{{ message }}</p>
+    <hr>
+    <p class="mb-0">Por favor, verifica las instrucciones y vuelve a intentarlo.</p>
+  </div>
+  <div class="text-center mt-4">
+    <a href="{{ url_for('inicio') }}" class="btn btn-primary">Volver al Inicio</a>
+  </div>
+</div>
+{% endblock %}
+try:
+    log_conf_matrix, log_accuracy, log_report, log_report_text, log_model = rl.train_and_evaluate()
+    if log_model is None:
+        print("-> ADVERTENCIA: No se encontró 'data_abandono.csv'. El módulo de Regresión Logística estará deshabilitado.")
+    else:
+        print("-> Modelo de Regresión Logística entrenado y listo.")
+except Exception as e:
+    print(f"-> ERROR al entrenar el modelo de Regresión Logística: {e}")
+    log_model = None
+
+
+
 # ------------------------
 # Rutas principales
 # ------------------------
 @app.route("/")
-def home():
-    return render_template("Home.html")
-
 @app.route("/inicio")
 def inicio():
     return render_template("Home.html")
 
-@app.route("/casos")
+@app.route("/casos-exito")
 def casos_exito():
     return render_template("CasosExito.html")
 
-@app.route("/concepto")
+@app.route("/concepto-rl")
 def concepto_rl():
     return render_template("ConceptRL.html")
 
 # ------------------------
 # Regresión Lineal
 # ------------------------
-@app.route("/pruebaRL")
+@app.route("/prueba-rl")
 def prueba_rl():
     X, R, y = RegresionLineal.get_training_data()
     data_preview = list(zip(X, R, y))
@@ -85,9 +119,12 @@ def plot_regresion():
 # ------------------------
 # Regresión Logística
 # ------------------------
-@app.route("/pruebaLogistica", methods=["GET", "POST"])
+@app.route("/prueba-logistica", methods=["GET", "POST"])
 def prueba_logistica():
-    conf_matrix, accuracy, report, report_text, model = rl.train_and_evaluate()
+    # Si el modelo no se pudo cargar (porque falta el CSV), muestra una página de error.
+    if log_model is None:
+        error_msg = "El modelo de Regresión Logística no pudo ser cargado. Asegúrate de que el archivo 'data_abandono.csv' exista en la carpeta principal del proyecto."
+        return render_template("error.html", message=error_msg), 500
 
     prediction = None
     prob = None
@@ -96,46 +133,34 @@ def prueba_logistica():
         asistencia = float(request.form["Asistencia"])
         horas = float(request.form["HorasEstudio"])
         carrera = request.form["Carrera"]
-
-        result = rl.predict_single(promedio, asistencia, horas, carrera, model=model)
+        result = rl.predict_single(promedio, asistencia, horas, carrera, model=log_model)
         prediction = "Sí" if result["clase"] == 1 else "No"
         prob = f"{result['probabilidad']:.4f}"
 
     cm_path = "/regresion_logistica/plot.png"
     return render_template("RegresionLogistica.html",
-                           conf_matrix=conf_matrix,
-                           accuracy=accuracy,
-                           report_text=report_text,
+                           conf_matrix=log_conf_matrix,
+                           accuracy=log_accuracy,
+                           report_text=log_report_text,
                            cm_path=cm_path,
                            prediction=prediction,
                            prob=prob)
 
 @app.route("/regresion_logistica/plot.png")
 def plot_logistica():
-    conf_matrix, _, _, _, _ = rl.train_and_evaluate()
-    buf = rl.plot_confusion_matrix(conf_matrix)
+    # Usa la matriz de confusión ya calculada al inicio
+    buf = rl.plot_confusion_matrix(log_conf_matrix)
     return send_file(buf, mimetype="image/png")
 
-# Ruta conceptos de logística
 @app.route("/regresion-logistica/conceptos")
 def conceptos_logistica():
     return render_template("ConceptLogistica.html")
 
-# Entrenamiento
-@app.route("/tipos-clasificacion/conceptos")
-def clasific_conceptos():
-    # Página con el enlace/iframe a tu mapa MindMeister
-    return render_template("clasific_basicos.html")
-
-# --- Optimización: Entrenar el modelo de Spam una sola vez al iniciar ---
-# Se llama a evaluate() para entrenar el modelo y generar la imagen de la matriz.
-# Las métricas se guardan en una variable para reutilizarlas en cada petición.
-print("Entrenando el modelo de clasificación de Spam al iniciar la app...")
-spam_metrics = evaluate()
-print("Modelo de Spam entrenado y listo.")
-
-@app.route("/tipos-clasificacion/caso", methods=["GET", "POST"])
-def clasific_caso():
+# ------------------------
+# Algoritmos de Clasificación
+# ------------------------
+@app.route("/caso-practico-clasificacion", methods=["GET", "POST"])
+def caso_practico_clasificacion():
     prediction = None
     if request.method == "POST":
         # Captura las 6 variables en el orden exacto
@@ -145,33 +170,14 @@ def clasific_caso():
         threshold = float(request.form.get("threshold", 0.5))
         label, prob = predict_label(features, threshold)
         prediction = {"label": label, "prob": prob, "threshold": threshold}
-
-    return render_template("clasific_caso.html",
+    return render_template("caso_practico_clasificacion.html",
                            metrics=spam_metrics,
                            prediction=prediction)
 
-# ------------------------
-# Algoritmos de Clasificación
-# ------------------------
 @app.route("/conceptos-clasificacion")
 def conceptos_clasificacion():
     return render_template("conceptos_clasificacion.html")
 
-@app.route("/caso-practico-clasificacion")
-def caso_practico_clasificacion():
-   
-    spam_metrics = {"accuracy": 0.95}
-    prediction = None
-    if request.method == "POST":
-        vars_order = ["freq_gratis","freq_promocion","freq_urgente",
-                      "tiene_link","remitente_conocido","num_adjuntos"]
-        features = [float(request.form[v]) for v in vars_order]
-        threshold = float(request.form.get("threshold", 0.5))
-        label, prob = predict_label(features, threshold)
-        prediction = {"label": label, "prob": prob, "threshold": threshold}
-    return render_template("caso_practico_clasificacion.html",
-                           metrics=spam_metrics,
-                           prediction=prediction)
 
 # ------------------------
 # Main

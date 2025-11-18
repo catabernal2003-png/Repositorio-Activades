@@ -5,6 +5,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
+import os
 
 RANDOM_STATE = 42
 MODEL_PATH = "spam_nb_model.pkl"
@@ -45,6 +46,11 @@ def evaluate():
     acc = round(accuracy_score(y_test, y_pred), 4)
     report = classification_report(y_test, y_pred, output_dict=True)
     cm = confusion_matrix(y_test, y_pred)
+
+    # --- Asegurarse de que el directorio 'static' exista ---
+    static_dir = os.path.dirname(CONF_IMG)
+    if not os.path.exists(static_dir):
+        os.makedirs(static_dir)
 
     # Guardar matriz de confusión
     plt.figure(figsize=(4,3))
