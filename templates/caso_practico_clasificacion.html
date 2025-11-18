@@ -1,61 +1,75 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="hero-title text-center mb-4">
-<h2>Caso Práctico: Detección de Spam (Naive Bayes)</h2>
+<div class="text-center mb-5">
+  <h2>Caso Práctico: Detección de Spam (Naive Bayes)</h2>
+  <p class="lead">Ingresa las características del correo para predecir si es spam.</p>
 </div>
   
-<div class="card p-3 my-3">
-  <h4>Exactitud: {{ metrics.accuracy }}</h4>
-  <img src="{{ url_for('static', filename='confusion_spam.png') }}" class="img-fluid">
-</div>
-
-<form method="post" class="row g-3">
-<div class="form-grid">
-  <div class="nose">
-    <label for="gratis">freq_gratis</label>
-    <input type="text" id="gratis">
-  </div>
-  
-  <div class="nose">
-    <label for="promo">freq_promocion</label>
-    <input type="text" id="promo">
-  </div>
-  
-  <div class="nose">
-    <label for="urgente">freq_urgente</label>
-    <input type="text" id="urgente">
-  </div>
-  
-  <div class="nose">
-    <label for="link">tiene_link</label>
-    <input type="text" id="link">
-  </div>
-  
-  <div class="nose">
-    <label for="remitente">remitente_conocido</label>
-    <input type="text" id="remitente">
-  </div>
-  
-  <div class="nose">
-    <label for="adjuntos">num_adjuntos</label>
-    <input type="text" id="adjuntos">
+<div class="card p-3 my-4">
+  <div class="card-body text-center">
+    <h5 class="card-title">Rendimiento del Modelo</h5>
+    <p class="card-text"><strong>Exactitud (Accuracy):</strong> {{ metrics.accuracy | round(3) }}</p>
+    <img src="{{ url_for('static', filename='confusion_spam.png') }}" class="img-fluid rounded" alt="Matriz de Confusión">
   </div>
 </div>
 
-<div class="form-extra">
-  <div class="nose">
-    <label for="threshold">Threshold (0-1)</label>
-    <input type="text" id="threshold" value="0.5">
+<form method="post" class="card p-4">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <label for="freq_gratis" class="form-label">Frecuencia "gratis"</label>
+      <input type="number" class="form-control" id="freq_gratis" name="freq_gratis" value="0" step="0.01" required>
+    </div>
+    
+    <div class="col-md-4">
+      <label for="freq_promocion" class="form-label">Frecuencia "promoción"</label>
+      <input type="number" class="form-control" id="freq_promocion" name="freq_promocion" value="0" step="0.01" required>
+    </div>
+    
+    <div class="col-md-4">
+      <label for="freq_urgente" class="form-label">Frecuencia "urgente"</label>
+      <input type="number" class="form-control" id="freq_urgente" name="freq_urgente" value="0" step="0.01" required>
+    </div>
+    
+    <div class="col-md-4">
+      <label for="tiene_link" class="form-label">¿Tiene link? (1=Sí, 0=No)</label>
+      <input type="number" class="form-control" id="tiene_link" name="tiene_link" value="0" min="0" max="1" required>
+    </div>
+    
+    <div class="col-md-4">
+      <label for="remitente_conocido" class="form-label">¿Remitente conocido? (1=Sí, 0=No)</label>
+      <input type="number" class="form-control" id="remitente_conocido" name="remitente_conocido" value="0" min="0" max="1" required>
+    </div>
+    
+    <div class="col-md-4">
+      <label for="num_adjuntos" class="form-label">Número de adjuntos</label>
+      <input type="number" class="form-control" id="num_adjuntos" name="num_adjuntos" value="0" min="0" required>
+    </div>
   </div>
-  <button type="submit">Predecir</button>
-</div>
+
+  <hr class="my-4">
+
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <label for="threshold" class="form-label">Umbral de decisión (Threshold): <span id="threshold-value">0.5</span></label>
+      <input type="range" class="form-range" id="threshold" name="threshold" min="0.05" max="0.95" step="0.05" value="0.5" oninput="document.getElementById('threshold-value').innerText = this.value;">
+    </div>
+    <div class="col-md-4 d-grid">
+      <button type="submit" class="btn btn-primary btn-lg">Predecir</button>
+    </div>
+  </div>
 </form>
 
 {% if prediction %}
-<hr>
-<h3>Predicción: {{ prediction.label }}</h3>
-<p>Probabilidad de Spam: {{ prediction.prob }}</p>
-<p>Threshold usado: {{ prediction.threshold }}</p>
+<div class="card text-center mt-4">
+  <div class="card-header">
+    Resultado de la Predicción
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">El correo es: <span class="badge bg-{{ 'danger' if prediction.label == 'Spam' else 'success' }}">{{ prediction.label }}</span></h3>
+    <p class="card-text"><strong>Probabilidad de ser Spam:</strong> {{ (prediction.prob * 100) | round(2) }}%</p>
+    <p class="card-text"><small class="text-muted">Umbral de decisión utilizado: {{ prediction.threshold }}</small></p>
+  </div>
+</div>
 {% endif %}
 {% endblock %}
