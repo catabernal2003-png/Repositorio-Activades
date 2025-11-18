@@ -8,6 +8,9 @@ import RegresionLineal
 import RegresionLogistica as rl
 from flask import Flask, request, render_template
 from SpamClassifier import evaluate, predict_label
+from rl_gridworld import GridWorldEnv, train_q_learning, save_model, load_model, plot_rewards, simulate_episode, plot_trajectory
+import os
+import threading
 
 
 app = Flask(__name__)
@@ -140,15 +143,15 @@ def clasific_caso():
     if request.method == "POST":
         # Captura las 6 variables en el orden exacto
         vars_order = ["freq_gratis","freq_promocion","freq_urgente",
-                      "tiene_link","remitente_conocido","num_adjuntos"]
+                    "tiene_link","remitente_conocido","num_adjuntos"]
         features = [float(request.form[v]) for v in vars_order]
         threshold = float(request.form.get("threshold", 0.5))
         label, prob = predict_label(features, threshold)
         prediction = {"label": label, "prob": prob, "threshold": threshold}
 
     return render_template("clasific_caso.html",
-                           metrics=spam_metrics,
-                           prediction=prediction)
+                        metrics=spam_metrics,
+                        prediction=prediction)
 
 # ------------------------
 # Algoritmos de Clasificación
@@ -159,19 +162,99 @@ def conceptos_clasificacion():
 
 @app.route("/caso-practico-clasificacion")
 def caso_practico_clasificacion():
-   
     spam_metrics = {"accuracy": 0.95}
     prediction = None
     if request.method == "POST":
         vars_order = ["freq_gratis","freq_promocion","freq_urgente",
-                      "tiene_link","remitente_conocido","num_adjuntos"]
+                    "tiene_link","remitente_conocido","num_adjuntos"]
         features = [float(request.form[v]) for v in vars_order]
         threshold = float(request.form.get("threshold", 0.5))
         label, prob = predict_label(features, threshold)
         prediction = {"label": label, "prob": prob, "threshold": threshold}
     return render_template("caso_practico_clasificacion.html",
-                           metrics=spam_metrics,
-                           prediction=prediction)
+                        metrics=spam_metrics,
+                        prediction=prediction)
+
+#-----------
+#------APRENDIZAJE POR REFUERZO---
+#------------
+
+TRAINING_PARAMS = {
+'episodes': 1000,
+'alpha': 0.1,
+'gamma': 0.99,
+'eps_start': 1.0,
+'eps_decay': 0.995,
+'eps_min': 0.01
+}
+
+
+@app.route('/reinforcement/conceptos')
+def conceptos_rl():
+    return render_template('rl_conceptos.html')
+
+
+@app.route('/reinforcement/caso')
+def caso_practico_rl():
+    model_exists = os.path.exists('models/q_table.pkl')
+    return render_template(
+        'rl_caso_practico.html',
+        model_exists=model_exists,
+        params=TRAINING_PARAMS
+    )
+
+
+
+@app.route('/reinforcement/train', methods=['POST'])
+def train_rl():
+    params = request.json or {}
+    for k in TRAINING_PARAMS:
+        if k in params:
+            TRAINING_PARAMS[k] = params[k]
+    
+    def _train_and_save():
+        env = GridWorldEnv(nrows=6, ncols=6, start=(0,0), goal=(5,5), holes=[(1,3),(2,3),(3,3)])
+        Q, rewards = train_q_learning(env, episodes=TRAINING_PARAMS['episodes'],
+                                    alpha=TRAINING_PARAMS['alpha'],
+                                    gamma=TRAINING_PARAMS['gamma'],
+                                    eps_start=TRAINING_PARAMS['eps_start'],
+                                    eps_decay=TRAINING_PARAMS['eps_decay'],
+                                    eps_min=TRAINING_PARAMS['eps_min'])
+        os.makedirs('models', exist_ok=True)
+        save_model(Q, 'models/q_table.pkl')
+        plot_rewards(rewards, 'static/images/rewards.png')
+    
+    thread = threading.Thread(target=_train_and_save)
+    thread.start()
+    return {'status': 'training_started'}
+
+
+@app.route('/reinforcement/simulate', methods=['GET'])
+def simulate_rl():
+    if not os.path.exists('models/q_table.pkl'):
+        return {'error': 'no_model'}, 400
+
+    Q = load_model('models/q_table.pkl')
+
+    env = GridWorldEnv(
+        nrows=6,
+        ncols=6,
+        start=(0, 0),
+        goal=(5, 5),
+        holes=[(1, 3), (2, 3), (3, 3)]
+    )
+
+    traj, reward, done = simulate_episode(env, Q)
+
+    plot_trajectory(traj, env, savepath='static/images/traj.png')
+
+    return {
+        'trajectory': traj,
+        'reward': float(reward),
+        'done': bool(done)
+    }
+
+
 
 # ------------------------
 # Main

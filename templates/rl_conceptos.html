@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Aprendizaje por Refuerzo - Conceptos{% endblock %}
+
+{% block content %}
+
+<!-- CSS incrustado SOLO para esta vista -->
+<style>
+    .rl-container {
+        background: rgba(255, 255, 255, 0.85);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+        margin-bottom: 40px;
+    }
+
+    .rl-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #0d6efd;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .rl-subtitle {
+        margin-top: 25px;
+        font-weight: bold;
+        color: #0a58ca;
+    }
+
+    .rl-container ul {
+        margin-left: 20px;
+    }
+
+    .rl-container p, 
+    .rl-container li {
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="rl-container">
+    <h1 class="rl-title">Aprendizaje por Refuerzo — Conceptos básicos</h1>
+
+    <p>
+        El Aprendizaje por Refuerzo (Reinforcement Learning, RL) es un paradigma del aprendizaje automático 
+        donde un agente aprende a tomar decisiones mediante interacción con un entorno, recibiendo 
+        recompensas o penalizaciones. A diferencia del aprendizaje supervisado, no requiere etiquetas, sino 
+        retroalimentación basada en las consecuencias de sus acciones. En contraste con el aprendizaje no 
+        supervisado, el objetivo no es descubrir estructuras ocultas, sino aprender una política óptima de acción.
+    </p>
+
+    <h3 class="rl-subtitle">Componentes del modelo RL</h3>
+    <ul>
+        <li><strong>Agente:</strong> quien toma decisiones.</li>
+        <li><strong>Entorno:</strong> donde ocurre la interacción.</li>
+        <li><strong>Estados:</strong> información que describe la situación actual.</li>
+        <li><strong>Acciones:</strong> posibles decisiones del agente.</li>
+        <li><strong>Recompensas:</strong> retroalimentación inmediata.</li>
+        <li><strong>Política:</strong> estrategia que usa el agente para decidir.</li>
+    </ul>
+
+    <h3 class="rl-subtitle">Algoritmos principales</h3>
+    <p>
+        <strong>Q-Learning:</strong> método fuera de política que aprende el valor de cada acción por estado.<br>
+        <strong>SARSA:</strong> método en política que actualiza usando la acción realmente tomada.<br>
+        <strong>Deep Q-Network (DQN):</strong> usa redes neuronales para aproximar la función Q en espacios grandes.
+    </p>
+
+    <h3 class="rl-subtitle">Buenas prácticas</h3>
+    <p>
+        Ajuste correcto de la tasa de exploración (ε), manejo adecuado de recompensas, estabilidad del aprendizaje,
+        normalización y control del factor de descuento (γ). La convergencia depende de un equilibrio entre exploración
+        y explotación y de una suficiente cantidad de episodios.
+    </p>
+
+    <h3 class="rl-subtitle">Referencias</h3>
+    <ul>
+        <li>Sutton, R. S., & Barto, A. G. (2018). <em>Reinforcement Learning: An Introduction</em>. MIT Press.</li>
+        <li>Mnih, V., et al. (2015). Human-level control through deep reinforcement learning. <em>Nature</em>, 518(7540), 529–533.</li>
+    </ul>
+</div>
+
+{% endblock %}

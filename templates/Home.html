@@ -3,9 +3,9 @@
 {% block title %}Inicio - App de Modelos{% endblock %}
 
 {% block content %}
-  <h1 class="hero-title text-center mb-4">Bienvenido/a a la App </h1>
+  <h1 class="hero-title text-center mb-4">Bienvenido/a a la App</h1>
   <p class="text-center fs-5 mb-4 text-white">
-    Usa el menú para navegar entre los módulos de Regresión Lineal, Logística y Clasificación.
+    Usa el menú para navegar entre los módulos de Regresión, Clasificación y Aprendizaje por Refuerzo.
   </p>
 
   <div class="row">
@@ -70,4 +70,22 @@
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <!-- Tarjeta de Aprendizaje por Refuerzo -->
+    <div class="col-md-6 mb-4">
+      <div class="card bg-dark text-white h-100">
+        <div class="card-header bg-secondary text-white">
+          <h2 class="h5 mb-0">Aprendizaje por Refuerzo</h2>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('conceptos_rl') }}" class="btn btn-outline-light">📚 Conceptos básicos</a>
+            <a href="{{ url_for('caso_practico_rl') }}" class="btn btn-outline-light">🤖 Caso práctico</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
