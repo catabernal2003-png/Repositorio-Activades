@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrenamiento Q-Learning{% endblock %}
+
+{% block content %}
+
+<style>
+/* ====== Estilos Mejorados ====== */
+.section-box {
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border-left: 4px solid #ff6b35;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.section-box h3 {
+    color: #ffae72;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.section-box label {
+    color: #ffd1bb;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.section-box input {
+    background: rgba(255,255,255,0.9);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px;
+}
+
+.section-box input:focus {
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 8px rgba(255,107,53,0.5);
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+#trainBtn, #simulateBtn {
+    width: 100%;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+#trainBtn {
+    background: linear-gradient(90deg, #ff6b35, #f7931e);
+    color: white;
+}
+
+#simulateBtn {
+    background: linear-gradient(90deg, #28a745, #66dd77);
+    color: white;
+}
+
+#trainBtn:hover, #simulateBtn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+#status {
+    font-size: 1.1rem;
+    color: #ffe5d4;
+    font-weight: bold;
+    padding: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    text-align: center;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.graph-container {
+    background: rgba(255,255,255,0.03);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.graph-container img {
+    border-radius: 12px;
+    border: 2px solid #444;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Asegurar altura completa para las columnas */
+.left-panel, .right-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-section {
+    position: sticky;
+    top: 20px;
+}
+</style>
+
+<h1 style="color:white; margin-bottom: 30px;">Entrenamiento Q-Learning</h1>
+
+<!-- =============================
+      DISEÑO EN 2 COLUMNAS
+============================= -->
+<div class="row">
+    
+    <!-- ▓▓▓ IZQUIERDA — FORMULARIO ▓▓▓ -->
+    <div class="col-md-5 left-panel">
+        <div class="section-box form-section">
+            <h3>Parámetros de Entrenamiento</h3>
+
+            <div class="mb-4">
+                <label>Episodios</label>
+                <input id="episodes" type="number" value="{{ params['episodes'] }}" class="form-control" />
+            </div>
+
+            <div class="mb-4">
+                <label>Tasa de aprendizaje (α)</label>
+                <input id="alpha" type="number" step="0.01" value="{{ params['alpha'] }}" class="form-control" />
+            </div>
+
+            <div class="mb-4">
+                <label>Factor de descuento (γ)</label>
+                <input id="gamma" type="number" step="0.01" value="{{ params['gamma'] }}" class="form-control" />
+            </div>
+
+            <div class="btn-container">
+                <button id="trainBtn" class="btn">🚀 Iniciar Entrenamiento</button>
+                <button id="simulateBtn" class="btn">▶️ Simular Política Entrenada</button>
+            </div>
+
+            <div id="status" class="mt-4"></div>
+        </div>
+    </div>
+
+    <!-- ▓▓▓ DERECHA — GRÁFICOS ▓▓▓ -->
+    <div class="col-md-7 right-panel">
+        
+        <!-- Gráfico de Recompensas -->
+        <div class="section-box">
+            <h3>📊 Gráfico de Recompensas</h3>
+            <div class="graph-container">
+                <img id="rewardsImg"
+                    src="{{ url_for('static', filename='images/rewards.png') }}?t=0"
+                    alt="Recompensas"
+                    class="img-fluid" />
+            </div>
+        </div>
+
+        <!-- Trayectoria -->
+        <div class="section-box">
+            <h3>🎯 Trayectoria Aprendida</h3>
+            <div class="graph-container">
+                <img id="trajImg"
+                    src="{{ url_for('static', filename='images/traj.png') }}?t=0"
+                    alt="Trayectoria"
+                    class="img-fluid" />
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- =======================
+      JAVASCRIPT RL
+======================= -->
+<script>
+document.getElementById('trainBtn').onclick = async function () {
+    const params = {
+        episodes: parseInt(document.getElementById('episodes').value),
+        alpha: parseFloat(document.getElementById('alpha').value),
+        gamma: parseFloat(document.getElementById('gamma').value)
+    };
+
+    document.getElementById('status').innerText = '⏳ Entrenamiento iniciado...';
+
+    const resp = await fetch('/reinforcement/train', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    });
+
+    const data = await resp.json();
+
+    if (data.status === 'training_started') {
+        document.getElementById('status').innerText =
+            'Entrenando... revisa la consola del servidor.';
+
+        setTimeout(() => {
+            document.getElementById('rewardsImg').src =
+                '/static/images/rewards.png?t=' + Date.now();
+        }, 5000);
+    }
+};
+
+document.getElementById('simulateBtn').onclick = async function () {
+    document.getElementById('status').innerText = '⏳ Simulando...';
+    
+    const resp = await fetch('/reinforcement/simulate');
+    const data = await resp.json();
+
+    if (data.error) {
+        document.getElementById('status').innerText =
+            'No hay modelo entrenado.';
+    } else {
+        document.getElementById('status').innerText =
+            'Simulación completada. Reward: ' + data.reward.toFixed(2);
+
+        document.getElementById('trajImg').src =
+            '/static/images/traj.png?t=' + Date.now();
+    }
+};
+</script>
+
+{% endblock %}
